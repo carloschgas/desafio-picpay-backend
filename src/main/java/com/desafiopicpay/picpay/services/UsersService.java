@@ -4,7 +4,9 @@ import com.desafiopicpay.picpay.domain.users.UserType;
 import com.desafiopicpay.picpay.domain.users.Users;
 import com.desafiopicpay.picpay.domain.users.UsersDTO;
 import com.desafiopicpay.picpay.repository.UsersRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.catalina.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,7 +25,7 @@ public class UsersService {
     public Users createUser(UsersDTO data) throws Exception {
 
         if(usersRepository.findUserByCPF(data.CPF()).isPresent() || usersRepository.findUsersByEmail(data.email()).isPresent()){
-            throw new Exception("Atenção: Já existe um dos identificadores cadastrados");
+            throw new DataIntegrityViolationException("Atenção: Já existe um dos identificadores cadastrados");
         }
 
         Users newUser = new Users(data.firstName(), data.lastName(), data.CPF(), data.email(), data.password(), data.balance(), data.userType());
@@ -36,7 +38,7 @@ public class UsersService {
     }
 
     public Users findUserById(UUID userID) throws Exception {
-        return usersRepository.findById(userID).orElseThrow(() -> new Exception("Usuário de ID" + userID + " não encontrado"));
+        return usersRepository.findById(userID).orElseThrow(() -> new EntityNotFoundException("Usuário de ID" + userID + " não encontrado"));
     }
 
     public void validateTransaction(UUID payerID, BigDecimal value) throws Exception {
@@ -47,7 +49,11 @@ public class UsersService {
         }
 
         if (value.compareTo(payer.getBalance()) > 0){
-            throw new Exception("Valor da transação é maior que o saldo do usuário");
+            throw new Exception("Valor da transação é inválido");
+        }
+
+        if (value.compareTo(BigDecimal.valueOf(0)) < 0){
+            throw new Exception("Valor da transação é inválido");
         }
     }
 

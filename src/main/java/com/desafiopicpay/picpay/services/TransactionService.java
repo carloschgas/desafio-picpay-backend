@@ -5,6 +5,7 @@ import com.desafiopicpay.picpay.domain.transaction.Transaction;
 import com.desafiopicpay.picpay.domain.transaction.TransactionRequestDTO;
 import com.desafiopicpay.picpay.domain.transaction.TransactionResponseDTO;
 import com.desafiopicpay.picpay.domain.users.Users;
+import com.desafiopicpay.picpay.infra.UnauthorizedTransactionException;
 import com.desafiopicpay.picpay.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class TransactionService {
 
         boolean isAuthorized = isTransactionAuthorized();
         if (!isAuthorized){
-            throw new Exception("Transação não autorizada externamente");
+            throw new UnauthorizedTransactionException("Transação não autorizada externamente");
         }
 
         usersService.subBalance(payer,data.value());
