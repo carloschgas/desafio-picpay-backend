@@ -1,9 +1,6 @@
 package com.desafiopicpay.picpay.domain.users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -15,14 +12,16 @@ public class Users {
     private UUID userID;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String CPF;
+    @Column(unique = true)
     private String email;
     private String password;
     private Long balance;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    public Users(UUID userID, String firstName, String lastName, String CPF, String email, String password, Long balance, UserType userType) {
-        this.userID = userID;
+    public Users( String firstName, String lastName, String CPF, String email, String password, Long balance, UserType userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.CPF = CPF;
