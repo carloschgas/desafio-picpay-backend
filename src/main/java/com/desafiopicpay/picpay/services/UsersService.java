@@ -16,9 +16,13 @@ public class UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public Users createUser(UsersDTO data){
-        Users newUser = new Users(data.firstName(), data.lastName(), data.CPF(), data.email(), data.password(), data.balance(), data.userType());
+    public Users createUser(UsersDTO data) throws Exception {
 
+        if(usersRepository.findUserByCPF(data.CPF()).isPresent() || usersRepository.findUsersByEmail(data.email()).isPresent()){
+            throw new Exception("Atenção: Já existe um dos identificadores cadastrados");
+        }
+
+        Users newUser = new Users(data.firstName(), data.lastName(), data.CPF(), data.email(), data.password(), data.balance(), data.userType());
         usersRepository.save(newUser);
         return newUser;
     }
