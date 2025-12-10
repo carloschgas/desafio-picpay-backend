@@ -6,6 +6,7 @@ import com.desafiopicpay.picpay.repository.UsersRepository;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,26 +38,26 @@ public class UsersService {
         return usersRepository.findById(userID).orElseThrow(() -> new Exception("Usuário de ID" + userID + " não encontrado"));
     }
 
-    public void validateTransaction(UUID payerID, Long value) throws Exception {
+    public void validateTransaction(UUID payerID, BigDecimal value) throws Exception {
         Users payer = findUserById(payerID);
 
         if (payer.getUserType().equals("LOJISTA")){
             throw new Exception("Lojistas não podem fazer transações, apenas receber");
         }
 
-        if (value > payer.getBalance()){
+        if (value.compareTo(payer.getBalance()) > 0){
             throw new Exception("Valor da transação é maior que o saldo do usuário");
         }
     }
 
-    public void addBalance(Users user, long value){
-        user.setBalance(user.getBalance() + value);
+    public void addBalance(Users user, BigDecimal value){
+        user.setBalance(user.getBalance().add(value));
     }
 
-    public void subBalance(Users user, long value) throws Exception{
-        long newBalance = user.getBalance() - value;
+    public void subBalance(Users user, BigDecimal value) throws Exception{
+        BigDecimal newBalance = user.getBalance().subtract(value);
 
-        if (newBalance < 0){
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0){
             throw new Exception("O saldo não pode ficar negativo após a transação");
         }
 

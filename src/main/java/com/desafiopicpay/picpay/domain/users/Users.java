@@ -2,6 +2,7 @@ package com.desafiopicpay.picpay.domain.users;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -17,11 +18,11 @@ public class Users {
     @Column(unique = true)
     private String email;
     private String password;
-    private Long balance;
+    private BigDecimal balance;
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    public Users( String firstName, String lastName, String CPF, String email, String password, Long balance, UserType userType) {
+    public Users( String firstName, String lastName, String CPF, String email, String password, BigDecimal balance, UserType userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.CPF = CPF;
@@ -81,11 +82,11 @@ public class Users {
         this.password = password;
     }
 
-    public Long getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

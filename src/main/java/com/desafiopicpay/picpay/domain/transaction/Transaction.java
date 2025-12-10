@@ -3,6 +3,7 @@ package com.desafiopicpay.picpay.domain.transaction;
 import com.desafiopicpay.picpay.domain.users.Users;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -17,17 +18,17 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "payee_id")
     private Users payee;
-    private Long amount;
+    private BigDecimal amount;
 
    public Transaction(){}
 
-    public Transaction( Users payer, Users payee, Long amount){
+    public Transaction( Users payer, Users payee, BigDecimal amount){
         this.payer = payer;
         this.payee = payee;
         this.amount = amount;
     }
 
-    public Long getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -53,7 +54,7 @@ public class Transaction {
         this.payer = payer;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }
