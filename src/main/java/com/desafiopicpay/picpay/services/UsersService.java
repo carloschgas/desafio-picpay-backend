@@ -1,5 +1,6 @@
 package com.desafiopicpay.picpay.services;
 
+import com.desafiopicpay.picpay.domain.users.UserType;
 import com.desafiopicpay.picpay.domain.users.Users;
 import com.desafiopicpay.picpay.domain.users.UsersDTO;
 import com.desafiopicpay.picpay.repository.UsersRepository;
@@ -41,7 +42,7 @@ public class UsersService {
     public void validateTransaction(UUID payerID, BigDecimal value) throws Exception {
         Users payer = findUserById(payerID);
 
-        if (payer.getUserType().equals("LOJISTA")){
+        if (payer.getUserType() == UserType.LOJISTA){
             throw new Exception("Lojistas não podem fazer transações, apenas receber");
         }
 
