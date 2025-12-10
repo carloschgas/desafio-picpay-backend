@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "transactions")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -16,18 +17,18 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "payee_id")
     private Users payee;
-    private Long value;
+    private Long amount;
 
-    public Transaction(){}
+   public Transaction(){}
 
-    public Transaction(Users payer, Users payee, Long value){
+    public Transaction( Users payer, Users payee, Long amount){
         this.payer = payer;
         this.payee = payee;
-        this.value = value;
+        this.amount = amount;
     }
 
-    public Long getValue() {
-        return value;
+    public Long getAmount() {
+        return amount;
     }
 
     public Users getPayee() {
@@ -42,6 +43,8 @@ public class Transaction {
         return transactionID;
     }
 
+    public void setTransactionID(UUID transactionID) { this.transactionID = transactionID;}
+
     public void setPayee(Users payee) {
         this.payee = payee;
     }
@@ -50,7 +53,7 @@ public class Transaction {
         this.payer = payer;
     }
 
-    public void setValue(Long value) {
-        this.value = value;
+    public void setAmount(Long amount) {
+        this.amount = amount;
     }
 }
