@@ -1,4 +1,4 @@
-package com.desafiopicpay.picpay.domain.controllers;
+package com.desafiopicpay.picpay.controllers;
 
 import com.desafiopicpay.picpay.domain.users.Users;
 import com.desafiopicpay.picpay.domain.users.UsersDTO;
